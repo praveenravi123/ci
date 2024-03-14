@@ -12,3 +12,5 @@ COPY . /app
 
 # Run python script when the container launches
 CMD ["python3", "cat.py"]
+
+EXPOSE 8000
