@@ -1,79 +1,45 @@
-#!/usr/bin/python
+class main: 
+    def __init__(self,key:dict) -> None:
+        self.key = key
 
-import argparse
-from pathlib import Path
-from sys import stderr, stdout
-import os
+    def get_input(self) -> None: 
+        while True:
+            blank_string = str(input("Enter string to decrypt: "))
+            if blank_string.isalpha():
+                blank_string = blank_string.lower()
+                self.blank_string = blank_string
+                break
+            else:
+                print("Input is not valid")
+                continue
 
-class CatError(Exception):
-    pass
+    def encrypt_string(self) -> str:
+        output = ""
+        for c in self.blank_string:
+            for k,v in self.key.items():
+                if k == c:
+                    output += v
+                else:
+                    continue
+        self.decrypted_string = output
+        return(output)
 
-class Logger:
-    def __init__(self, verbosity=False):
-        self.verbose = verbosity
+    def decrypt_string(self, string: str) -> str:
+        output = "" 
+        string = string.lower()
+        string = string.strip()
+        if string == "":
+            return(self.blank_string)
+        else: 
+            for c in string:
+                for k,v in self.key.items():
+                    if v == c:
+                        output += k
+        
+        return(output)
 
-    def error(self, message):
-        print(f'ERROR: {message}')
-
-logger = Logger()
-
-'''
-    Read the selected text file 
-
-    Example:
-    your/path/file.txt
-'''
-def readFile(src: Path):
-
-    '''
-        if the given path is a directory
-        ERROR the path is a directory
-    '''
-    if src.is_dir():
-
-        logger.error(f'The path {src}: is a directory')
-
-    else:
-
-        with open(src, 'r') as f:
-            for lines in f:
-                print(lines, end='')
-
-def cli() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        prog='cat',
-        description='cat command implementation in python',
-        epilog='Example: your/path/file.txt'
-    )
-
-    parser.add_argument(
-        'source',
-        type=Path,
-        help='Source file'
-    )
-
-    return parser.parse_args()
-
-def main():
-
-    args = cli()
-
-    try:
-
-        readFile(args.source)
-
-    except CatError as e:
-
-        logger.error(e)
-
-        exit(1)
-
-    except KeyboardInterrupt:
-
-        logger.error('\nInterrupt')
-
-'''
-    Start the program
-'''
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    key ={"a": "d", "b": "e", "c": "f", "d": "g", "e": "h", "f": "i", "g": "j", "h": "k", "i": "l", "j": "m", "k": "n", "l": "o", "m": "p", "n": "q", "o": "r", "p": "s", "q": "t", "r": "u", "s": "v", "t": "w", "u": "x", "v": "y", "w": "z", "x": "a", "y": "b", "z": "c"}
+    main = main(key=key)
+    main.get_input()
+    print(main.encrypt_string())
